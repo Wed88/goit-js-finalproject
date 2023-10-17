@@ -14,6 +14,31 @@ function galleryItemsMarkup(arr) {
 };
 
 galleryEl.insertAdjacentHTML('afterbegin', galleryItemsMarkup(galleryItems));
+galleryEl.addEventListener('click', onGalleryclick);
 
-console.log(galleryItemsMarkup(galleryItems))
+function onGalleryclick(evt) {
+  evt.preventDefault();
+  
+  instance.element().querySelector("img").src = evt.target.dataset.source;
+  if (!evt.target.dataset.source) return;
+  instance.show();
+};
+
+const instance = basicLightbox.create(`<img src="" />`, {
+    onShow: () => {
+      window.addEventListener("keydown", keydownEscape);
+    },
+    onClose: () => {
+      window.removeEventListener("keydown", keydownEscape);
+    },
+  });
+ 
+function keydownEscape(evt) {
+  if (evt.key === "Escape") {
+    instance.close();
+    return;
+  }
+}
+
+
 console.log(galleryItems);
